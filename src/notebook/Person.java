@@ -1,10 +1,15 @@
 package notebook;
 
 public class Person {
+    private static int count=1;
     private int id;
     private String name;
     private String surname;
     private String phone;
+
+    public Person() {
+        count++;
+    }
 
     public int getId() {
         return id;
@@ -47,4 +52,6 @@ public class Person {
                 ", phone='" + phone + '\'' +
                 '}';
     }
+
+
 }

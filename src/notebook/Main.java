@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+
 public class Main {
 
     static Scanner scan = new Scanner(System.in);
@@ -18,6 +19,12 @@ public class Main {
             switch (cmd){
                 case "create":
                     create();
+                    break;
+                case "list":
+                    list_person();
+                    break;
+                case "delete":
+                    delete_person();
                     break;
                 case "exit":
                     return;
@@ -49,4 +56,27 @@ public class Main {
 
 
     }
+
+    private static void list_person() {
+        System.out.println("List of existing persons:");
+
+        for (Person person:record){
+          /*  print ("Name"+person.getName());
+            print ("Surname"+person.getSurname());
+            print ("Name"+person.getName());*/
+
+          System.out.println(person);
+        }
+    }
+
+    private static void delete_person(){
+
+        System.out.println("Please, enter id:");
+        int id = scan.nextInt();
+
+        record.remove(id);
+
+
+    }
+
 }
