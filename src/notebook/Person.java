@@ -1,14 +1,16 @@
 package notebook;
 
 public class Person {
-    private static int count=1;
+    private static int count=0;
     private int id;
     private String name;
     private String surname;
     private String phone;
+    private String email;
 
     public Person() {
         count++;
+        id=count;
     }
 
     public int getId() {
@@ -43,6 +45,14 @@ public class Person {
         this.phone = phone;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public String toString() {
         return "Person{" +
@@ -50,6 +60,7 @@ public class Person {
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
                 '}';
     }
 
