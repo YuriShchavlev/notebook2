@@ -1,11 +1,18 @@
 package notebook;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
 
 public class Main {
+
+    public final static String DATE_FORMAT = "dd.MM.yyyy";
+    public final static DateTimeFormatter DATE_FORMATTER
+            = DateTimeFormatter.ofPattern(DATE_FORMAT);
 
     static Scanner scan = new Scanner(System.in);
     static List<Record> record = new ArrayList<>();
@@ -14,7 +21,7 @@ public class Main {
     public static void main(String[] args) {
 
         while(true){
-            System.out.println("Enter command (cr_pers, cr_note, list, delete, help or exit):");
+            System.out.println("Enter command (cr_pers, cr_note, cr_rem, list, delete, find, help or exit):");
             String cmd=scan.next();
             switch (cmd){
                 case "cr_pers":
@@ -23,11 +30,15 @@ public class Main {
                 case "cr_note":
                     create_note();
                     break;
+                case "createreminder":
+                case "cr_rem":
+                    createReminder();
+                    break;
                 case "list":
                     list_person();
                     break;
                 case "delete":
-                    delete_person();
+                    removeById();
                     break;
                 case "find":
                     find();
@@ -46,48 +57,38 @@ public class Main {
     private static void create_person() {
 
         Person person = new Person();
-
-        System.out.println("Your name?");
-        String name = askString();
-        person.setName(name);
-
-        System.out.println("Your surname?");
-        String surname = askString();
-        person.setSurname(surname);
-
-        System.out.println("Your e-mail?");
-        String email = askString();
-        person.setEmail(email);
-
-        System.out.println("Your phone-number?");
-        String phone = askString();
-
-        String phone_string = new String(phone);
-        if (phone_string.length() >= 5) {
-            person.setPhone(phone);
-            record.add(person);
-            System.out.println("Person: " + person);
-        } else {
-
-            System.out.println("Phone-number should contain at least 5 symbols! Please, enter the number again: ");
-            phone = askString();
-            person.setPhone(phone);
-            record.add(person);
+        addRecord(person);
             System.out.println("Person: " + person);
         }
 
+    private static void create_note() {
+        Note note = new Note();
+        addRecord(note);
     }
 
-    private static void create_note(){
-        Note note=new Note();
-
-        System.out.println("Your note-text?");
-        String text = askString();
-        note.setText(text);
-        record.add(note);
-        System.out.println("Note: " + note);
-
+    private static int askInt() {
+        while (true) {
+            try {
+                return scan.nextInt();
+            } catch (InputMismatchException e) {
+                scan.next(); // skip wrong input
+                System.out.println("It isn't a number");
+            }
+        }
     }
+
+    private static void addRecord(Record p) {
+        p.askQuestions();
+        record.add(p);
+        System.out.println("You have created this record:");
+        System.out.println(p);
+    }
+
+    private static void createReminder() {
+        var reminder = new Reminder();
+        addRecord(reminder);
+    }
+
     private static void list_person() {
         System.out.println("List of existing persons:");
 
@@ -95,22 +96,6 @@ public class Main {
 
           System.out.println(person);
         }
-    }
-
-    private static void delete_person(){
-
-        System.out.println("Please, enter id:");
-        int id = scan.nextInt();
-
-        if (id>0){
-            record.remove(id-1);
-            System.out.println("Person with id="+id+" is deleted!");
-        }
-        else {
-            System.out.println("You have just one person left!, who's ID is different from the data entered");
-        }
-
-    // add cycle to check, if id exists
     }
 
     private static void find(){
@@ -135,6 +120,18 @@ public class Main {
                 "Enter 'exit' to go out off the program.\n");
     }
 
+    private static void removeById() {
+        System.out.println("Enter ID to remove:");
+        int id = askInt();
+        for (int i = 0; i < record.size(); i++) {
+            Record p = record.get(i);
+            if (id == p.getId()) {
+                record.remove(i);
+                break;
+            }
+        }
+    }
+
     public static String askString (){
         var result =new ArrayList<String>();
         var word=scan.next();
@@ -152,6 +149,32 @@ public class Main {
         else{
             return word;
         }
+    }
+
+    public static String askPhone() {
+        while (true) {
+            String phone = askString();
+            // checking if there any characters expect digits, spaces, pluses and dashes
+            if (phone.chars().anyMatch(c -> !Character.isDigit(c) && c != ' ' && c != '+' && c != '-')) {
+                System.out.println("Only digits, spaces, plus and dash are allowed!");
+                continue;
+            }
+
+            // checking how many digits in the entered number (excluding spaces and other non-digits)
+            if (phone.chars().filter(Character::isDigit).count() < 5) {
+                System.out.println("At least 5 digits in phone number");
+                continue;
+            }
+
+            // validation passed
+            return phone;
+        }
+    }
+
+    public static LocalDate askDate() {
+        String d = askString();
+        LocalDate date = LocalDate.parse(d, DATE_FORMATTER);
+        return date;
     }
 
 }

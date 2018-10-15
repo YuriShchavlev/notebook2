@@ -12,11 +12,10 @@ public abstract class Record {
 
     public abstract boolean hasSubStr(String str);
 
+    public abstract void askQuestions();
+
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 }
