@@ -2,10 +2,7 @@ package notebook;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 
 public class Main {
@@ -14,8 +11,9 @@ public class Main {
     public final static DateTimeFormatter DATE_FORMATTER
             = DateTimeFormatter.ofPattern(DATE_FORMAT);
 
+
     static Scanner scan = new Scanner(System.in);
-    static List<Record> record = new ArrayList<>();
+    static Map<Integer,Record> record = new LinkedHashMap<>();
 
 
     public static void main(String[] args) {
@@ -30,7 +28,6 @@ public class Main {
                 case "cr_note":
                     create_note();
                     break;
-                case "createreminder":
                 case "cr_rem":
                     createReminder();
                     break;
@@ -42,6 +39,9 @@ public class Main {
                     break;
                 case "find":
                     find();
+                    break;
+                case "show":
+                    showId();
                     break;
                 case "help":
                     help();
@@ -66,6 +66,53 @@ public class Main {
         addRecord(note);
     }
 
+    private static void createReminder() {
+        var reminder = new Reminder();
+        addRecord(reminder);
+    }
+
+    private static void list_person() {
+        System.out.println("List of existing persons:");
+
+        for (Record person:record.values()){
+
+            System.out.println(person);
+        }
+    }
+
+    private static void removeById() {
+        System.out.println("Enter ID to remove:");
+        int id = askInt();
+        record.remove(id);
+    }
+
+    private static void find(){
+        System.out.println("What do you want to find?");
+        String str=askString();
+
+        for (Record r: record.values()){
+
+            if (r.hasSubStr(str)){
+                System.out.println("The record is: "+r);
+            }
+        }
+    }
+
+    private static void showId(){
+        System.out.println("Enter ID to show:");
+        int id=askInt();
+        System.out.println(record.get(id));
+    }
+
+    private static void help(){
+        System.out.println("Thank you asking!\n" +
+                "Please, enter string 'cr_pers' to create new person with name, surname, phone and other data.\n" +
+                "Please, enter string 'cr_note' to create new note with any text.\n" +
+                "Enter string 'list' to list all existing persons with their data.\n"+
+                "Enter string 'delete' to delete a person based by person's ID in ArrayList.\n" +
+                "Enter 'exit' to go out off the program.\n");
+    }
+
     private static int askInt() {
         while (true) {
             try {
@@ -79,57 +126,9 @@ public class Main {
 
     private static void addRecord(Record p) {
         p.askQuestions();
-        record.add(p);
+        record.put(p.getId(),p);
         System.out.println("You have created this record:");
         System.out.println(p);
-    }
-
-    private static void createReminder() {
-        var reminder = new Reminder();
-        addRecord(reminder);
-    }
-
-    private static void list_person() {
-        System.out.println("List of existing persons:");
-
-        for (Record person:record){
-
-          System.out.println(person);
-        }
-    }
-
-    private static void find(){
-        System.out.println("What do you want to find?");
-        String str=askString();
-
-        for (Record r: record){
-
-            if (r.hasSubStr(str)){
-                System.out.println("The record is: "+r);
-            }
-        }
-
-
-    }
-    private static void help(){
-        System.out.println("Thank you asking!\n" +
-                "Please, enter string 'cr_pers' to create new person with name, surname, phone and other data.\n" +
-                "Please, enter string 'cr_note' to create new note with any text.\n" +
-                "Enter string 'list' to list all existing persons with their data.\n"+
-                "Enter string 'delete' to delete a person based by person's ID in ArrayList.\n" +
-                "Enter 'exit' to go out off the program.\n");
-    }
-
-    private static void removeById() {
-        System.out.println("Enter ID to remove:");
-        int id = askInt();
-        for (int i = 0; i < record.size(); i++) {
-            Record p = record.get(i);
-            if (id == p.getId()) {
-                record.remove(i);
-                break;
-            }
-        }
     }
 
     public static String askString (){

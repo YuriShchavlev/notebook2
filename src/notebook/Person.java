@@ -1,5 +1,8 @@
 package notebook;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Person extends Record{
 
     private String name;
@@ -7,6 +10,8 @@ public class Person extends Record{
     private String phone;
     private String email;
     private String hairColor;
+
+    static List<Record> record = new ArrayList<>();
 
 
     public String getName() {
@@ -84,5 +89,19 @@ public class Person extends Record{
 
         System.out.println("Enter email:");
         email = Main.askString();
+    }
+
+    private static void create_person() {
+
+        Person person = new Person();
+        addRecord(person);
+        System.out.println("Person: " + person);
+    }
+
+    private static void addRecord(Record p) {
+        p.askQuestions();
+        record.add(p);
+        System.out.println("You have created this record:");
+        System.out.println(p);
     }
 }
