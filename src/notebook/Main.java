@@ -1,6 +1,7 @@
 package notebook;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -10,6 +11,9 @@ public class Main {
     public final static String DATE_FORMAT = "dd.MM.yyyy";
     public final static DateTimeFormatter DATE_FORMATTER
             = DateTimeFormatter.ofPattern(DATE_FORMAT);
+    public final static String TIME_FORMAT = "HH:mm";
+    public final static DateTimeFormatter TIME_FORMATTER
+            = DateTimeFormatter.ofPattern(TIME_FORMAT);
 
 
     static Scanner scan = new Scanner(System.in);
@@ -45,6 +49,9 @@ public class Main {
                     break;
                 case "show":
                     showId();
+                    break;
+                case "exp":
+                    expired();
                     break;
                 case "help":
                     help();
@@ -112,6 +119,19 @@ public class Main {
         System.out.println(record.get(id));
     }
 
+    private static void expired(){
+        for(Record record: record.values()) {
+            if (record instanceof Expirable) {
+
+            Expirable e = (Expirable)record;
+
+            if (e.isExpired()) {
+                System.out.println(record);
+            }
+        }
+        }
+    }
+
     private static void help(){
         System.out.println("Thank you for asking!\n" +
                 "*****************************\n"+
@@ -123,6 +143,7 @@ public class Main {
                 ">Enter string 'delete' to delete a person based by person's ID.\n" +
                 ">Enter string 'find' to find info with a string.\n"+
                 ">Enter string 'show' to show person with ID.\n"+
+                ">Enter string 'exp' to show expired alarms and reminders.\n"+
                 ">Enter 'exit' to go out off the program.\n");
     }
 
@@ -189,4 +210,9 @@ public class Main {
         return date;
     }
 
+    public static LocalTime askTime() {
+        String t = askString();
+        LocalTime time = LocalTime.parse(t, TIME_FORMATTER);
+        return time;
+    }
 }
