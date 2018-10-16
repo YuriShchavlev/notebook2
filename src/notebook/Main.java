@@ -19,7 +19,7 @@ public class Main {
     public static void main(String[] args) {
 
         while(true){
-            System.out.println("Enter command (cr_pers, cr_note, cr_rem, list, delete, find, help or exit):");
+            System.out.println("Enter command (cr_pers, cr_note, cr_rem, cr_alarm, list, delete, find, show, help or exit):");
             String cmd=scan.next();
             switch (cmd){
                 case "cr_pers":
@@ -30,6 +30,9 @@ public class Main {
                     break;
                 case "cr_rem":
                     createReminder();
+                    break;
+                case "cr_alarm":
+                    createAlarm();
                     break;
                 case "list":
                     list_person();
@@ -71,6 +74,11 @@ public class Main {
         addRecord(reminder);
     }
 
+    private static void createAlarm(){
+        var alarm = new Alarm();
+        addRecord(alarm);
+    }
+
     private static void list_person() {
         System.out.println("List of existing persons:");
 
@@ -105,12 +113,17 @@ public class Main {
     }
 
     private static void help(){
-        System.out.println("Thank you asking!\n" +
-                "Please, enter string 'cr_pers' to create new person with name, surname, phone and other data.\n" +
-                "Please, enter string 'cr_note' to create new note with any text.\n" +
-                "Enter string 'list' to list all existing persons with their data.\n"+
-                "Enter string 'delete' to delete a person based by person's ID in ArrayList.\n" +
-                "Enter 'exit' to go out off the program.\n");
+        System.out.println("Thank you for asking!\n" +
+                "*****************************\n"+
+                ">Please, enter string 'cr_pers' to create new person with name, surname, phone and other data.\n" +
+                ">Please, enter string 'cr_note' to create new note with any text.\n" +
+                ">Please, enter string 'cr_rem' to create new reminder.\n" +
+                ">Please, enter string 'cr_alarm' to create new alarm.\n" +
+                ">Enter string 'list' to list all existing persons with their data.\n"+
+                ">Enter string 'delete' to delete a person based by person's ID.\n" +
+                ">Enter string 'find' to find info with a string.\n"+
+                ">Enter string 'show' to show person with ID.\n"+
+                ">Enter 'exit' to go out off the program.\n");
     }
 
     private static int askInt() {

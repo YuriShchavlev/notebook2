@@ -9,9 +9,8 @@ public class Reminder extends Alarm{
     @Override
     public void askQuestions() {
         super.askQuestions();
-        System.out.println("Enter reminder date");
+        System.out.println("Enter reminder-date");
         date = Main.askDate();
-        System.out.println("Enter reminder time");
     }
 
     @Override
