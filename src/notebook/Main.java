@@ -23,7 +23,7 @@ public class Main {
     public static void main(String[] args) {
 
         while(true){
-            System.out.println("Enter command (cr_pers, cr_note, cr_rem, cr_alarm, list, delete, find, show, help or exit):");
+            System.out.println("Enter command (cr_pers, cr_note, cr_rem, cr_alarm, list, delete, find, show, cr_pet, help or exit):");
             String cmd=scan.next();
             switch (cmd){
                 case "cr_pers":
@@ -52,6 +52,8 @@ public class Main {
                     break;
                 case "exp":
                     expired();
+                case "cr_pet":
+                    create_pet();
                     break;
                 case "help":
                     help();
@@ -132,6 +134,13 @@ public class Main {
         }
     }
 
+    private static void create_pet() {
+
+        Pet pet = new Pet();
+        addRecord(pet);
+        System.out.println("Person: " + pet);
+    }
+
     private static void help(){
         System.out.println("Thank you for asking!\n" +
                 "*****************************\n"+
@@ -143,6 +152,7 @@ public class Main {
                 ">Enter string 'delete' to delete a person based by person's ID.\n" +
                 ">Enter string 'find' to find info with a string.\n"+
                 ">Enter string 'show' to show person with ID.\n"+
+                ">Enter string 'cr_pet' to create new pet.\n"+
                 ">Enter string 'exp' to show expired alarms and reminders.\n"+
                 ">Enter 'exit' to go out off the program.\n");
     }

@@ -3,7 +3,7 @@ package notebook;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Person extends Record{
+public class Person extends Record implements WithBirthday{
 
     private String name;
     private String surname;
